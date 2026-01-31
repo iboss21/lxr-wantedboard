@@ -208,20 +208,29 @@ end
 
 -- Validate crimes list
 function Utils.ValidateCrimes(crimes)
-    if not crimes or type(crimes) ~= 'table' or #crimes == 0 then return false end
-    
-    for _, crimeValue in ipairs(crimes) do
-        local found = false
-        for _, crime in ipairs(Config.WantedPosters.crimes) do
-            if crime.value == crimeValue then
-                found = true
-                break
+    -- Accept both string (comma-separated) and table formats
+    if type(crimes) == 'string' then
+        -- If it's a string, just check it's not empty
+        return crimes and string.len(crimes) > 0
+    elseif type(crimes) == 'table' then
+        -- If it's a table, validate each crime
+        if #crimes == 0 then return false end
+        
+        for _, crimeValue in ipairs(crimes) do
+            local found = false
+            for _, crime in ipairs(Config.WantedPosters.crimes) do
+                if crime.value == crimeValue then
+                    found = true
+                    break
+                end
             end
+            if not found then return false end
         end
-        if not found then return false end
+        
+        return true
     end
     
-    return true
+    return false
 end
 
 -- Validate danger level
@@ -258,6 +267,26 @@ function Utils.PrintTable(tbl, indent)
             print(formatting .. tostring(v))
         end
     end
+end
+
+-- ████████████████████████████████████████████████████████████████████████████████
+-- ████████████████████████████ 3D TEXT UTILITIES █████████████████████████████████
+-- ████████████████████████████████████████████████████████████████████████████████
+
+-- Draw 3D text at coordinates (CLIENT SIDE ONLY)
+function Utils.DrawText3D(x, y, z, text)
+    local onScreen, _x, _y = GetScreenCoordFromWorldCoord(x, y, z)
+    local px, py, pz = table.unpack(GetGameplayCamCoords())
+    
+    SetTextScale(0.35, 0.35)
+    SetTextFontForCurrentCommand(1)
+    SetTextColor(255, 255, 255, 215)
+    SetTextCentre(1)
+    
+    DisplayText(CreateVarString(10, "LITERAL_STRING", text), _x, _y)
+    
+    local factor = (string.len(text)) / 370
+    DrawSprite("generic_textures", "hud_menu_4a", _x, _y + 0.0125, 0.015 + factor, 0.03, 0.0, 35, 35, 35, 190, 0)
 end
 
 -- ████████████████████████████████████████████████████████████████████████████████
