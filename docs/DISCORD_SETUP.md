@@ -179,7 +179,7 @@ Config.Discord = {
 If you want to use the database tables for role mappings, run the Discord integration SQL:
 
 ```bash
-mysql -u your_username -p your_database < docs/installation/installation_discord.sql
+mysql -u your_username -p your_database < installation/installation_discord.sql
 ```
 
 ### Option 2: Manual Setup
