@@ -40,12 +40,8 @@ lua54 'yes'
 
 escrow_ignore {
     'config.lua',
-    'installation.sql',
-    'installation_discord.sql',
+    'docs/**/*',
     'README.md',
-    'INSTALLATION.md',
-    'FEATURES.md',
-    'CHANGELOG.md',
     'shared/*.lua',
     'modules/**/*.lua'
 }

@@ -59,8 +59,8 @@ This major update introduces comprehensive Discord integration, webhook notifica
 
 ### 📚 Comprehensive Documentation
 - **New Setup Guides**
-  - `DISCORD_SETUP.md` - Complete Discord integration guide (9,182 characters)
-  - `WEBHOOK_SETUP.md` - Full webhook setup documentation (11,309 characters)
+  - [`DISCORD_SETUP.md`](DISCORD_SETUP.md) - Complete Discord integration guide (9,182 characters)
+  - [`WEBHOOK_SETUP.md`](WEBHOOK_SETUP.md) - Full webhook setup documentation (11,309 characters)
   - Step-by-step instructions with screenshots
   - Troubleshooting sections
   - Example configurations
@@ -105,7 +105,7 @@ This major update introduces comprehensive Discord integration, webhook notifica
   - `lxr_discord_verification` - Player Discord verification data
   - `lxr_discord_audit_log` - Discord access audit logging
   - `lxr_webhook_config` - Multiple webhook configurations
-  - See `installation_discord.sql`
+  - See `installation/installation_discord.sql`
 
 ### Code Quality
 - **Better Organization**
@@ -157,15 +157,15 @@ webhook = {
 ## 📦 Installation
 
 ### For New Installations
-1. Run `installation.sql` (existing tables)
-2. **Optional:** Run `installation_discord.sql` (Discord features)
-3. Configure Discord bot (see `DISCORD_SETUP.md`)
-4. Configure webhooks (see `WEBHOOK_SETUP.md`)
+1. Run `installation/installation.sql` (existing tables)
+2. **Optional:** Run `installation/installation_discord.sql` (Discord features)
+3. Configure Discord bot (see [`DISCORD_SETUP.md`](DISCORD_SETUP.md))
+4. Configure webhooks (see [`WEBHOOK_SETUP.md`](WEBHOOK_SETUP.md))
 5. Update `config.lua` with your settings
 6. Restart resource
 
 ### For Existing Installations
-1. **Optional:** Run `installation_discord.sql` for new tables
+1. **Optional:** Run `installation/installation_discord.sql` for new tables
 2. Update `fxmanifest.lua` (automatically done)
 3. Configure Discord/webhooks in `config.lua`
 4. Restart resource

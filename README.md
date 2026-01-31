@@ -12,7 +12,7 @@
 - 👥 **Player Interaction**: View, remove, or pick up placed posters
 - 🎭 **Evidence Control**: Criminals can remove posters to hide evidence
 
-[**→ View Full Poster Item Guide**](POSTER_ITEM_GUIDE.md)
+[**→ View Full Poster Item Guide**](docs/POSTER_ITEM_GUIDE.md)
 
 ## 📋 Features
 
@@ -38,10 +38,10 @@
 
 ### 1. Database Setup
 
-Run the `installation.sql` file in your database to create the required tables:
+Run the `docs/installation/installation.sql` file in your database to create the required tables:
 
 ```sql
--- Import the installation.sql file or run it manually
+-- Import the docs/installation/installation.sql file or run it manually
 ```
 
 The script creates:
@@ -148,7 +148,7 @@ Config.Discord = {
 }
 ```
 
-**[→ Full Discord Setup Guide](DISCORD_SETUP.md)**
+**[→ Full Discord Setup Guide](docs/DISCORD_SETUP.md)**
 
 ### Discord Webhooks
 
@@ -172,7 +172,7 @@ Config.Logging = {
 - 🎨 Beautiful color-coded embeds
 - ⚡ Smart rate limiting and queue system
 
-**[→ Full Webhook Setup Guide](WEBHOOK_SETUP.md)**
+**[→ Full Webhook Setup Guide](docs/WEBHOOK_SETUP.md)**
 
 ## ⚙️ Configuration Examples
 

@@ -31,7 +31,7 @@ All notable changes to LXR Wanted Board will be documented in this file.
 
 - **Documentation**
   - Comprehensive README.md with full feature list
-  - Quick start INSTALLATION.md guide
+  - Quick start [INSTALLATION.md](INSTALLATION.md) guide
   - SQL installation script with all tables
   - .gitignore for clean repository management
 
