@@ -41,11 +41,13 @@ lua54 'yes'
 escrow_ignore {
     'config.lua',
     'installation.sql',
+    'installation_discord.sql',
     'README.md',
     'INSTALLATION.md',
     'FEATURES.md',
     'CHANGELOG.md',
-    'shared/*.lua'
+    'shared/*.lua',
+    'modules/**/*.lua'
 }
 
 -- ████████████████████████████████████████████████████████████████████████████████
@@ -77,6 +79,9 @@ server_scripts {
     '@oxmysql/lib/MySQL.lua',
     'server/framework.lua',
     'server/database.lua',
+    'modules/webhooks/server.lua',
+    'modules/discord/server.lua',
+    'server/modules.lua',
     'server/main.lua'
 }
 

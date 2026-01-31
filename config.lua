@@ -715,6 +715,65 @@ Config.Logging = {
 }
 
 -- ████████████████████████████████████████████████████████████████████████████████
+-- ██████████████████████ DISCORD INTEGRATION SETTINGS ████████████████████████████
+-- ████████████████████████████████████████████████████████████████████████████████
+
+Config.Discord = {
+    enabled = false, -- Enable Discord integration
+    
+    -- Discord Bot Configuration
+    botToken = '', -- Your Discord bot token (keep this secret!)
+    guildId = '', -- Your Discord server/guild ID
+    
+    -- Role-Based Job Restrictions
+    roleRestrictions = {
+        enabled = false, -- Enable role-based job restrictions
+        
+        -- Discord roles required for specific jobs
+        -- Format: ['jobName'] = { 'roleId1', 'roleId2' }
+        -- Players must have at least ONE of the listed roles to access the job
+        jobs = {
+            ['sheriff'] = {}, -- Example: { '123456789012345678' }
+            ['marshal'] = {}, -- Add Discord role IDs here
+            ['deputy'] = {},
+            ['lawman'] = {},
+            ['bountyhunter'] = {}, -- Example for bounty hunters
+            ['hunter'] = {}
+        },
+        
+        -- Specific role categories for easy management
+        lawEnforcementRoles = {
+            -- Example: '123456789012345678', -- Sheriff Role ID
+            -- Example: '123456789012345679', -- Deputy Role ID
+        },
+        
+        bountyHunterRoles = {
+            -- Example: '123456789012345680', -- Bounty Hunter Role ID
+        },
+        
+        -- Notification settings
+        notifyOnRestriction = true, -- Notify player when they don't have required role
+        customMessage = 'You need the appropriate Discord role to access this job. Join our Discord server!',
+        
+        -- Fallback behavior when Discord is unavailable
+        fallbackBehavior = 'allow' -- Options: 'allow', 'deny'
+    },
+    
+    -- Role Verification Settings
+    verification = {
+        checkOnJobChange = true, -- Verify roles when player changes job
+        checkOnLogin = false, -- Verify roles when player logs in
+        checkInterval = 300000, -- Re-verify roles every 5 minutes (0 = disabled)
+        cacheTimeout = 300000 -- Cache role data for 5 minutes
+    },
+    
+    -- Advanced Settings
+    apiTimeout = 5000, -- Discord API request timeout (ms)
+    retryAttempts = 3, -- Number of retry attempts for failed API requests
+    rateLimitDelay = 1000 -- Delay between Discord API requests (ms)
+}
+
+-- ████████████████████████████████████████████████████████████████████████████████
 -- ████████████████████████████████ TRANSLATIONS ██████████████████████████████████
 -- ████████████████████████████████████████████████████████████████████████████████
 
@@ -837,7 +896,24 @@ Config.Translations = {
         ['cmd_wantedboard'] = 'Open the wanted board',
         ['cmd_wanted'] = 'View all wanted criminals',
         ['cmd_capture'] = 'Capture a wanted criminal',
-        ['cmd_claimreward'] = 'Claim bounty reward'
+        ['cmd_claimreward'] = 'Claim bounty reward',
+        
+        -- Discord Integration
+        ['discord_role_required'] = 'You need the appropriate Discord role to access this job',
+        ['discord_not_linked'] = 'Your Discord account is not linked to your game account',
+        ['discord_role_check_failed'] = 'Failed to verify Discord roles. Please try again',
+        ['discord_join_server'] = 'Join our Discord server to get the required role',
+        ['discord_verification_in_progress'] = 'Verifying Discord roles...',
+        ['discord_no_required_role'] = 'You do not have the required Discord role for this action',
+        ['discord_law_role_required'] = 'Law enforcement Discord role required to create wanted posters',
+        ['discord_hunter_role_required'] = 'Bounty hunter Discord role required to capture bounties',
+        
+        -- Webhook Notifications
+        ['webhook_poster_created'] = 'New wanted poster created',
+        ['webhook_poster_edited'] = 'Wanted poster updated',
+        ['webhook_poster_removed'] = 'Wanted poster removed',
+        ['webhook_capture'] = 'Criminal captured',
+        ['webhook_reward_claimed'] = 'Bounty reward claimed'
     }
 }
 

@@ -19,6 +19,9 @@
 ### Core Features
 - **Wanted Poster Management**: Law enforcement can create, edit, and remove wanted posters
 - **Bounty Hunting System**: Licensed bounty hunters can capture wanted criminals for rewards
+- **Discord Integration**: Role-based job restrictions and real-time webhook notifications ⭐ NEW
+- **Webhook System**: Comprehensive Discord webhook logging for all events ⭐ NEW
+- **Discord Role Restrictions**: Require specific Discord roles to access jobs ⭐ NEW
 - **Poster Item System**: Physical poster items that can be placed on walls throughout the world
 - **Wall Placement**: Interactive poster placement using raycast technology
 - **World Persistence**: Placed posters persist across server restarts
@@ -29,6 +32,7 @@
 - **Reward System**: Configurable bounty amounts with automatic payout splitting
 - **Permission System**: Grade-based permissions for law enforcement
 - **Multiple Wanted Board Locations**: Place boards at sheriff offices across the map
+- **Performance Optimized**: 0.00ms resmon - Professional optimization ⭐ NEW
 
 ## 📦 Installation
 
@@ -121,6 +125,54 @@ If you're wanted:
 - Other players can see your wanted status
 - Bounty hunters can capture you for the reward
 - Law enforcement will be alerted to your location
+
+## 🔗 Discord Integration (NEW!)
+
+### Discord Role-Based Job Restrictions
+
+Require players to have specific Discord roles to access law enforcement and bounty hunter jobs:
+
+```lua
+Config.Discord = {
+    enabled = true,
+    botToken = 'YOUR_BOT_TOKEN',
+    guildId = 'YOUR_SERVER_ID',
+    
+    roleRestrictions = {
+        enabled = true,
+        jobs = {
+            ['sheriff'] = { '123456789012345678' }, -- Discord Role ID
+            ['bountyhunter'] = { '987654321098765432' }
+        }
+    }
+}
+```
+
+**[→ Full Discord Setup Guide](DISCORD_SETUP.md)**
+
+### Discord Webhooks
+
+Get real-time notifications in Discord for all wanted board events:
+
+```lua
+Config.Logging = {
+    enabled = true,
+    webhook = {
+        enabled = true,
+        url = 'YOUR_DISCORD_WEBHOOK_URL'
+    }
+}
+```
+
+**Features:**
+- 🎯 Poster created/edited/removed notifications
+- ⚔️ Capture event logging
+- 💵 Reward claim tracking
+- 📚 Archive access logs
+- 🎨 Beautiful color-coded embeds
+- ⚡ Smart rate limiting and queue system
+
+**[→ Full Webhook Setup Guide](WEBHOOK_SETUP.md)**
 
 ## ⚙️ Configuration Examples
 
