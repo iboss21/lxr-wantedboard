@@ -33,14 +33,14 @@ This repository now contains a **fully functional, production-ready** wanted boa
 ✅ `html/script.js` - UI functionality (NEW)  
 
 #### Database (1)
-✅ `installation.sql` - Complete database setup (NEW)  
+✅ `installation/installation.sql` - Complete database setup (NEW)  
 
 #### Documentation (5)
 ✅ `README.md` - Full documentation (UPDATED)  
-✅ `INSTALLATION.md` - Quick start guide (NEW)  
-✅ `FEATURES.md` - Feature overview (NEW)  
-✅ `CHANGELOG.md` - Version history (NEW)  
-✅ `PROJECT_STATUS.md` - This file (NEW)  
+✅ [`INSTALLATION.md`](INSTALLATION.md) - Quick start guide (NEW)  
+✅ [`FEATURES.md`](FEATURES.md) - Feature overview (NEW)  
+✅ [`CHANGELOG.md`](CHANGELOG.md) - Version history (NEW)  
+✅ [`PROJECT_STATUS.md`](PROJECT_STATUS.md) - This file (NEW)  
 
 ---
 
@@ -163,10 +163,10 @@ This repository now contains a **fully functional, production-ready** wanted boa
 - One of: LXRCore, RSG-Core, QBCore, QBR-Core, or Standalone
 
 ### Installation Time
-⏱️ **5 minutes** following INSTALLATION.md
+⏱️ **5 minutes** following [INSTALLATION.md](INSTALLATION.md)
 
 ### Setup Steps
-1. Import installation.sql (1 min)
+1. Import installation/installation.sql (1 min)
 2. Extract to resources folder (1 min)
 3. Configure config.lua (2 min)
 4. Add to server.cfg (30 sec)

@@ -179,12 +179,12 @@ Config.Discord = {
 If you want to use the database tables for role mappings, run the Discord integration SQL:
 
 ```bash
-mysql -u your_username -p your_database < installation_discord.sql
+mysql -u your_username -p your_database < docs/installation/installation_discord.sql
 ```
 
 ### Option 2: Manual Setup
 
-Alternatively, you can manually create the tables by running `installation_discord.sql` in your database manager (phpMyAdmin, HeidiSQL, etc.).
+Alternatively, you can manually create the tables by running `installation/installation_discord.sql` in your database manager (phpMyAdmin, HeidiSQL, etc.).
 
 ---
 

@@ -422,7 +422,7 @@ For added security, consider:
 
 Enable database logging for webhook events:
 
-Run the optional table from `installation_discord.sql`:
+Run the optional table from `installation/installation_discord.sql`:
 
 ```sql
 CREATE TABLE IF NOT EXISTS `lxr_webhook_config` (

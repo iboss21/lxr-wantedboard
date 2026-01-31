@@ -172,9 +172,9 @@ Everything is configurable:
 
 ### 📚 Documentation
 - README.md - Full documentation
-- INSTALLATION.md - Quick setup guide
-- CHANGELOG.md - Version history
-- installation.sql - Database setup
+- [INSTALLATION.md](INSTALLATION.md) - Quick setup guide
+- [CHANGELOG.md](CHANGELOG.md) - Version history
+- installation/installation.sql - Database setup
 - Inline code comments
 
 ## 🚀 Ready for Production

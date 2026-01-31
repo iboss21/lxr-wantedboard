@@ -6,7 +6,7 @@ This guide will help you get the LXR Wanted Board up and running in minutes!
 
 ### Step 1: Database Setup
 1. Open your MySQL/MariaDB management tool (phpMyAdmin, HeidiSQL, etc.)
-2. Import the `installation.sql` file into your database
+2. Import the `installation/installation.sql` file into your database
 3. Verify 4 tables were created:
    - `lxr_wanted_board`
    - `lxr_wanted_archive`
@@ -80,7 +80,7 @@ The script comes with pre-configured locations. Check `config.lua` starting at l
 - Make sure NUI focus is working (try other scripts)
 
 **Database Errors:**
-- Verify `installation.sql` was imported correctly
+- Verify `installation/installation.sql` was imported correctly
 - Check oxmysql is running and connected
 - Verify table names match config
 
