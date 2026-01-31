@@ -96,6 +96,25 @@ RegisterNetEvent('lxr-wantedboard:server:createWanted', function(data)
         return
     end
     
+    -- Check Discord role if enabled
+    if Discord and Config.Discord.enabled and Config.Discord.roleRestrictions.enabled then
+        Discord.CanCreatePoster(src, function(canCreate)
+            if not canCreate then
+                Framework.Notify(src, _U('discord_law_role_required'), 'error')
+                return
+            end
+            
+            -- Continue with poster creation after Discord check
+            CreateWantedPosterInternal(src, data)
+        end)
+    else
+        -- No Discord check needed, create directly
+        CreateWantedPosterInternal(src, data)
+    end
+end)
+
+-- Internal function to create poster (separated for Discord async callback)
+function CreateWantedPosterInternal(src, data)
     -- Validate data
     if not data.citizenid or not data.name or not data.crimes or not Utils.ValidateCrimes(data.crimes) then
         Framework.Notify(src, _U('error_invalid_data'), 'error')
@@ -143,6 +162,11 @@ RegisterNetEvent('lxr-wantedboard:server:createWanted', function(data)
         Database.CreateWanted(wantedData, function(id)
             if id then
                 Framework.Notify(src, _U('poster_created'), 'success')
+                
+                -- Send webhook notification
+                if Webhook and Config.Logging.enabled and Config.Logging.webhook.enabled and Config.Logging.logCreation then
+                    Webhook.SendPosterCreated(wantedData, issuerName)
+                end
                 
                 -- Notify all law enforcement
                 if Config.USNationalArchive.notifyOnNewWanted then
