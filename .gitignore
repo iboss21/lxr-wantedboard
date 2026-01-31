@@ -1,0 +1,47 @@
+# LXR Wanted Board - Git Ignore File
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Backup Files
+*.bak
+*.backup
+*~
+
+# Temporary Files
+tmp/
+temp/
+*.tmp
+
+# Node modules (if you add any build tools)
+node_modules/
+
+# Environment Files
+.env
+.env.local
+
+# Database Backups
+*.sql.bak
+
+# Custom User Images (optional - uncomment if you want to ignore uploaded images)
+# html/images/*.png
+# html/images/*.jpg
+# html/images/*.jpeg
+
+# But keep the placeholder files
+!html/images/.gitkeep
+!html/fonts/.gitkeep
+!html/images/default-sketch.svg

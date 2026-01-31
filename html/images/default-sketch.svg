@@ -1,0 +1,6 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#e8d5b7"/>
+  <text x="256" y="220" font-family="serif" font-size="36" fill="#3e2415" text-anchor="middle" font-weight="bold">WANTED</text>
+  <text x="256" y="280" font-family="serif" font-size="24" fill="#6b5537" text-anchor="middle">No Image Available</text>
+  <text x="256" y="320" font-family="serif" font-size="18" fill="#8b6f47" text-anchor="middle">Sketch Coming Soon</text>
+</svg>

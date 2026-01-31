@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LXR Wanted Board</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app" style="display: none;">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">
+                <h1>🎯 WANTED BOARD</h1>
+                <p class="header-subtitle">U.S. National Archive - Law Enforcement Division</p>
+            </div>
+            <button class="close-btn" onclick="closeUI()">✕</button>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content">
+            <!-- Wanted List View -->
+            <div id="wantedList" class="wanted-grid">
+                <!-- Wanted posters will be dynamically added here -->
+            </div>
+
+            <!-- Wanted Details View -->
+            <div id="wantedDetails" class="details-panel" style="display: none;">
+                <div class="details-header">
+                    <h2>WANTED POSTER DETAILS</h2>
+                    <button class="btn-back" onclick="showWantedList()">← Back to List</button>
+                </div>
+                
+                <div class="details-content">
+                    <div class="poster-large">
+                        <div class="poster-header-large">
+                            <h3>WANTED</h3>
+                            <p class="dead-or-alive">DEAD OR ALIVE</p>
+                        </div>
+                        
+                        <div class="poster-image">
+                            <img id="detailsSketch" src="" alt="Wanted Person" onerror="this.src='images/default-sketch.png'">
+                        </div>
+                        
+                        <div class="poster-info-large">
+                            <h2 id="detailsName">-</h2>
+                            <p class="alias">Alias: <span id="detailsAlias">Unknown</span></p>
+                            
+                            <div class="info-section">
+                                <h4>CRIMES</h4>
+                                <ul id="detailsCrimes"></ul>
+                            </div>
+                            
+                            <div class="info-section">
+                                <h4>DESCRIPTION</h4>
+                                <p id="detailsDescription">-</p>
+                            </div>
+                            
+                            <div class="info-row">
+                                <div class="info-item">
+                                    <label>Last Seen:</label>
+                                    <span id="detailsLastSeen">-</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Danger Level:</label>
+                                    <span id="detailsDanger" class="danger-badge">-</span>
+                                </div>
+                            </div>
+                            
+                            <div class="reward-large">
+                                <h3>REWARD</h3>
+                                <p class="reward-amount" id="detailsReward">$0</p>
+                            </div>
+                            
+                            <div class="poster-footer">
+                                <p>Issued by: <span id="detailsIssuedBy">-</span></p>
+                                <p>Date: <span id="detailsIssuedDate">-</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="action-buttons" id="actionButtons">
+                        <button class="btn btn-capture" id="btnCapture" onclick="captureWanted()" style="display: none;">
+                            Capture Criminal
+                        </button>
+                        <button class="btn btn-edit" id="btnEdit" onclick="editWanted()" style="display: none;">
+                            Edit Poster
+                        </button>
+                        <button class="btn btn-remove" id="btnRemove" onclick="removeWanted()" style="display: none;">
+                            Remove Poster
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create/Edit Wanted Form -->
+            <div id="wantedForm" class="form-panel" style="display: none;">
+                <div class="form-header">
+                    <h2 id="formTitle">CREATE WANTED POSTER</h2>
+                    <button class="btn-back" onclick="showWantedList()">← Cancel</button>
+                </div>
+                
+                <form id="posterForm" class="poster-form">
+                    <div class="form-group">
+                        <label>Citizen ID *</label>
+                        <input type="text" id="formCitizenId" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="formName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Known Alias</label>
+                        <input type="text" id="formAlias">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Crimes *</label>
+                        <textarea id="formCrimes" rows="3" placeholder="List crimes separated by commas" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="formDescription" rows="4" placeholder="Physical description, last known location, etc."></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Reward Amount ($) *</label>
+                            <input type="number" id="formReward" min="0" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Danger Level *</label>
+                            <select id="formDanger" required>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                                <option value="extreme">Extreme</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Last Seen Location</label>
+                        <input type="text" id="formLastSeen">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-submit">Submit Poster</button>
+                        <button type="button" class="btn btn-cancel" onclick="showWantedList()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Action Bar (for law enforcement) -->
+        <div class="action-bar" id="actionBar" style="display: none;">
+            <button class="btn btn-create" onclick="showCreateForm()">
+                + Create New Wanted Poster
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
