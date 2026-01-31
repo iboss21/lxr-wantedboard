@@ -165,6 +165,69 @@
         </div>
     </div>
 
+    <!-- Poster Item View (Standalone for handheld poster) -->
+    <div id="posterView" class="poster-standalone" style="display: none;">
+        <div class="poster-standalone-container">
+            <button class="close-btn-poster" onclick="closePosterView()">✕</button>
+            
+            <div class="poster-options" id="posterOptions" style="display: none;">
+                <h2>WANTED POSTER</h2>
+                <p>What would you like to do with this poster?</p>
+                <div class="poster-option-buttons">
+                    <button class="btn-poster-option" onclick="viewPosterItem()">📄 View Poster</button>
+                    <button class="btn-poster-option" onclick="placePosterItem()">📌 Place on Wall</button>
+                </div>
+            </div>
+            
+            <div class="poster-display" id="posterDisplay" style="display: none;">
+                <div class="poster-card-large">
+                    <div class="poster-header-standalone">
+                        <h3>WANTED</h3>
+                        <p class="dead-or-alive-standalone">DEAD OR ALIVE</p>
+                    </div>
+                    
+                    <div class="poster-image-standalone">
+                        <img id="posterItemSketch" src="" alt="Wanted Person" onerror="this.src='images/default-sketch.png'">
+                    </div>
+                    
+                    <div class="poster-info-standalone">
+                        <h2 id="posterItemName">-</h2>
+                        <p class="alias-standalone">Alias: <span id="posterItemAlias">Unknown</span></p>
+                        
+                        <div class="info-section-standalone">
+                            <h4>CRIMES</h4>
+                            <div id="posterItemCrimes" class="crimes-list-standalone"></div>
+                        </div>
+                        
+                        <div class="info-section-standalone">
+                            <h4>DESCRIPTION</h4>
+                            <p id="posterItemDescription">-</p>
+                        </div>
+                        
+                        <div class="info-grid-standalone">
+                            <div class="info-item-standalone">
+                                <span class="label">Reward:</span>
+                                <span class="value reward-standalone" id="posterItemReward">$0</span>
+                            </div>
+                            <div class="info-item-standalone">
+                                <span class="label">Danger Level:</span>
+                                <span class="value danger-badge-standalone" id="posterItemDanger">LOW</span>
+                            </div>
+                            <div class="info-item-standalone">
+                                <span class="label">Last Seen:</span>
+                                <span class="value" id="posterItemLastSeen">Unknown</span>
+                            </div>
+                            <div class="info-item-standalone">
+                                <span class="label">Issued By:</span>
+                                <span class="value" id="posterItemIssuer">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

@@ -109,6 +109,26 @@ CREATE TABLE IF NOT EXISTS `lxr_bounty_licenses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ════════════════════════════════════════════════════════════════════════════════
+-- PLACED POSTERS TABLE (World Persistence)
+-- ════════════════════════════════════════════════════════════════════════════════
+
+CREATE TABLE IF NOT EXISTS `lxr_placed_posters` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `wanted_id` INT(11) NOT NULL,
+    `poster_data` TEXT NOT NULL,
+    `coords_x` FLOAT NOT NULL,
+    `coords_y` FLOAT NOT NULL,
+    `coords_z` FLOAT NOT NULL,
+    `heading` FLOAT NOT NULL,
+    `placed_by` VARCHAR(50) NOT NULL,
+    `placed_by_name` VARCHAR(100) NOT NULL,
+    `placed_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    KEY `wanted_id` (`wanted_id`),
+    KEY `placed_by` (`placed_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ════════════════════════════════════════════════════════════════════════════════
 -- INSTALLATION COMPLETE
 -- ════════════════════════════════════════════════════════════════════════════════
 

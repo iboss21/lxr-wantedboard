@@ -28,6 +28,12 @@ window.addEventListener('message', function(event) {
         case 'update':
             updateWantedList(data.data);
             break;
+        case 'showPosterOptions':
+            showPosterOptions(data.data);
+            break;
+        case 'showPoster':
+            showPoster(data.data);
+            break;
     }
 });
 
@@ -308,8 +314,95 @@ function GetParentResourceName() {
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeUI();
+        closePosterView();
     }
 });
+
+// ════════════════════════════════════════════════════════════════════════════════
+// POSTER ITEM VIEWING (Standalone)
+// ════════════════════════════════════════════════════════════════════════════════
+
+let currentPosterData = null;
+
+function showPosterOptions(posterData) {
+    currentPosterData = posterData;
+    document.getElementById('posterView').style.display = 'flex';
+    document.getElementById('posterOptions').style.display = 'block';
+    document.getElementById('posterDisplay').style.display = 'none';
+}
+
+function viewPosterItem() {
+    if (!currentPosterData) return;
+    
+    document.getElementById('posterOptions').style.display = 'none';
+    document.getElementById('posterDisplay').style.display = 'block';
+    
+    // Populate poster data
+    document.getElementById('posterItemName').textContent = currentPosterData.name || 'Unknown';
+    document.getElementById('posterItemAlias').textContent = currentPosterData.alias || 'None';
+    document.getElementById('posterItemDescription').textContent = currentPosterData.description || 'No description available';
+    document.getElementById('posterItemReward').textContent = '$' + (currentPosterData.reward || 0);
+    document.getElementById('posterItemLastSeen').textContent = currentPosterData.last_seen || 'Unknown';
+    document.getElementById('posterItemIssuer').textContent = currentPosterData.issued_by_name || 'Unknown';
+    
+    // Set danger level
+    const dangerBadge = document.getElementById('posterItemDanger');
+    dangerBadge.textContent = (currentPosterData.danger_level || 'low').toUpperCase();
+    dangerBadge.className = 'value danger-badge-standalone danger-' + (currentPosterData.danger_level || 'low');
+    
+    // Set crimes
+    const crimesContainer = document.getElementById('posterItemCrimes');
+    crimesContainer.innerHTML = '';
+    if (currentPosterData.crimes && Array.isArray(currentPosterData.crimes)) {
+        currentPosterData.crimes.forEach(crime => {
+            const crimeTag = document.createElement('span');
+            crimeTag.className = 'crime-tag-standalone';
+            crimeTag.textContent = crime;
+            crimesContainer.appendChild(crimeTag);
+        });
+    } else if (currentPosterData.crimes) {
+        const crimeTag = document.createElement('span');
+        crimeTag.className = 'crime-tag-standalone';
+        crimeTag.textContent = currentPosterData.crimes;
+        crimesContainer.appendChild(crimeTag);
+    }
+    
+    // Set sketch image
+    if (currentPosterData.sketch_data) {
+        document.getElementById('posterItemSketch').src = currentPosterData.sketch_data;
+    }
+}
+
+function placePosterItem() {
+    // Notify game to enter placement mode
+    fetch('https://lxr-wantedboard/posterOption', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ option: 'place', posterData: currentPosterData })
+    });
+    
+    closePosterView();
+}
+
+function showPoster(posterData) {
+    currentPosterData = posterData;
+    viewPosterItem();
+    document.getElementById('posterView').style.display = 'flex';
+    document.getElementById('posterOptions').style.display = 'none';
+    document.getElementById('posterDisplay').style.display = 'block';
+}
+
+function closePosterView() {
+    document.getElementById('posterView').style.display = 'none';
+    currentPosterData = null;
+    
+    // Notify game
+    fetch('https://lxr-wantedboard/closePoster', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({})
+    });
+}
 
 // ════════════════════════════════════════════════════════════════════════════════
 // ════════════════════════════════════════════════════════════════════════════════

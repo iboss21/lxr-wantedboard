@@ -2,10 +2,26 @@
 
 **A comprehensive wanted board system for RedM** featuring bounty hunting mechanics, law enforcement tools, and US National Archive (MDT) integration.
 
+## ⚡ NEW: Wanted Poster Item System
+
+**Place physical wanted posters throughout the world!**
+
+- 📄 **Usable Poster Items**: View wanted criminal details from your inventory
+- 📌 **Wall Placement**: Mount posters on any building wall using raycast
+- 🌍 **World Persistence**: Placed posters save to database and persist
+- 👥 **Player Interaction**: View, remove, or pick up placed posters
+- 🎭 **Evidence Control**: Criminals can remove posters to hide evidence
+
+[**→ View Full Poster Item Guide**](POSTER_ITEM_GUIDE.md)
+
 ## 📋 Features
 
+### Core Features
 - **Wanted Poster Management**: Law enforcement can create, edit, and remove wanted posters
 - **Bounty Hunting System**: Licensed bounty hunters can capture wanted criminals for rewards
+- **Poster Item System**: Physical poster items that can be placed on walls throughout the world
+- **Wall Placement**: Interactive poster placement using raycast technology
+- **World Persistence**: Placed posters persist across server restarts
 - **US National Archive Integration**: Automatic archiving of all wanted posters and captures
 - **Multi-Framework Support**: LXRCore, RSG-Core, QBCore, QBR-Core, and Standalone
 - **Beautiful Western-Themed UI**: Vintage poster-style interface matching RedM aesthetics
@@ -28,6 +44,8 @@ The script creates:
 - `lxr_wanted_board` - Active wanted posters
 - `lxr_wanted_archive` - Historical archive (MDT integration)
 - `lxr_wanted_captures` - Capture records
+- `lxr_bounty_licenses` - Bounty hunter licenses
+- `lxr_placed_posters` - Placed poster locations (NEW)
 - `lxr_bounty_licenses` - Bounty hunter licenses
 
 ### 2. Resource Installation

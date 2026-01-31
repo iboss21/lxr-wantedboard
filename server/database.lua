@@ -288,5 +288,70 @@ function Database.GetStatistics(callback)
 end
 
 -- ████████████████████████████████████████████████████████████████████████████████
+-- ████████████████████ PLACED POSTERS DATABASE ███████████████████████████████████
+-- ████████████████████████████████████████████████████████████████████████████████
+
+-- Create placed poster
+function Database.CreatePlacedPoster(data, callback)
+    MySQL.insert('INSERT INTO lxr_placed_posters (wanted_id, poster_data, coords_x, coords_y, coords_z, heading, placed_by, placed_by_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
+        data.wanted_id,
+        data.poster_data,
+        data.coords_x,
+        data.coords_y,
+        data.coords_z,
+        data.heading,
+        data.placed_by,
+        data.placed_by_name
+    }, function(id)
+        callback(id)
+    end)
+end
+
+-- Get all placed posters
+function Database.GetAllPlacedPosters(callback)
+    MySQL.query('SELECT * FROM lxr_placed_posters ORDER BY placed_at DESC', {}, function(result)
+        callback(result)
+    end)
+end
+
+-- Get placed poster by ID
+function Database.GetPlacedPosterById(id, callback)
+    MySQL.single('SELECT * FROM lxr_placed_posters WHERE id = ?', { id }, function(result)
+        callback(result)
+    end)
+end
+
+-- Get nearby placed posters
+function Database.GetNearbyPlacedPosters(x, y, z, radius, callback)
+    MySQL.query([[
+        SELECT *,
+        SQRT(POW(coords_x - ?, 2) + POW(coords_y - ?, 2) + POW(coords_z - ?, 2)) as distance
+        FROM lxr_placed_posters
+        HAVING distance <= ?
+        ORDER BY distance ASC
+    ]], { x, y, z, radius }, function(result)
+        callback(result)
+    end)
+end
+
+-- Remove placed poster
+function Database.RemovePlacedPoster(id, callback)
+    MySQL.query('DELETE FROM lxr_placed_posters WHERE id = ?', { id }, function(result)
+        local success = result and result.affectedRows and result.affectedRows > 0
+        callback(success)
+    end)
+end
+
+-- Remove all placed posters for a wanted ID
+function Database.RemovePlacedPostersByWantedId(wantedId, callback)
+    MySQL.query('DELETE FROM lxr_placed_posters WHERE wanted_id = ?', { wantedId }, function(result)
+        if callback then 
+            local success = result and result.affectedRows and result.affectedRows > 0
+            callback(success)
+        end
+    end)
+end
+
+-- ████████████████████████████████████████████████████████████████████████████████
 -- █████████████████████████████████████████████████████████████████████████████████
 -- ████████████████████████████████████████████████████████████████████████████████

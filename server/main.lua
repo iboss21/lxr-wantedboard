@@ -20,7 +20,7 @@ print([[
    ███████╗██║  ██║██║ ╚████║██████╔╝    ╚██████╔╝██║         ╚███╔███╔╝╚██████╔╝███████╗╚████╔╝ ███████╗███████║
    ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝      ╚═════╝ ╚═╝          ╚══╝╚══╝  ╚═════╝ ╚══════╝ ╚═══╝  ╚══════╝╚══════╝
                                                                                                                    
-   🎯 LXR Wanted Board - Enyo Wanted Board System
+   🎯 LXR Wanted Board - Advanced Wanted Board System
    Version: 1.0.0 | Author: iBoss | Website: wolves.land
 ^7]])
 
@@ -447,6 +447,259 @@ RegisterNetEvent('lxr-wantedboard:server:checkWantedStatus', function(targetSour
     Database.GetWantedByCitizenId(targetCid, function(wanted)
         TriggerClientEvent('lxr-wantedboard:client:receiveWantedStatus', src, wanted ~= nil, wanted)
     end)
+end)
+
+-- ████████████████████████████████████████████████████████████████████████████████
+-- ██████████████████████████ POSTER ITEM SYSTEM ██████████████████████████████████
+-- ████████████████████████████████████████████████████████████████████████████████
+
+-- Register wanted poster as usable item
+if Config.Items.wanted_poster.usable then
+    Framework.RegisterUsableItem('wanted_poster', function(source, item)
+        local src = source
+        
+        -- Check if item has poster data in metadata
+        if item and item.info and item.info.posterData then
+            -- Send poster data to client
+            TriggerClientEvent('lxr-wantedboard:client:usePoster', src, item.info.posterData)
+        else
+            Framework.Notify(src, _U('error_invalid_poster'), 'error')
+        end
+    end)
+end
+
+-- Create poster item from wanted board
+RegisterNetEvent('lxr-wantedboard:server:createPosterItem', function(wantedId)
+    local src = source
+    
+    -- Get wanted poster data
+    Database.GetWantedById(wantedId, function(wantedData)
+        if not wantedData then
+            Framework.Notify(src, _U('not_wanted'), 'error')
+            return
+        end
+        
+        -- Create poster snapshot
+        local posterData = {
+            wanted_id = wantedId,
+            citizenid = wantedData.citizenid,
+            name = wantedData.name,
+            alias = wantedData.alias,
+            crimes = wantedData.crimes,
+            description = wantedData.description,
+            reward = wantedData.reward,
+            danger_level = wantedData.danger_level,
+            last_seen = wantedData.last_seen,
+            issued_by = wantedData.issued_by,
+            issued_by_name = wantedData.issued_by_name,
+            created_at = wantedData.created_at,
+            sketch_data = wantedData.sketch_data
+        }
+        
+        -- Add item to player inventory with metadata
+        Framework.AddItem(src, 'wanted_poster', 1, posterData)
+        Framework.Notify(src, _U('poster_received'), 'success')
+    end)
+end)
+
+-- ████████████████████████████████████████████████████████████████████████████████
+-- ██████████████████████ PLACED POSTER MANAGEMENT ████████████████████████████████
+-- ████████████████████████████████████████████████████████████████████████████████
+
+-- Place poster in world
+RegisterNetEvent('lxr-wantedboard:server:placePoster', function(data)
+    local src = source
+    
+    if not Config.PosterPlacement.enabled then
+        Framework.Notify(src, _U('poster_placement_disabled'), 'error')
+        return
+    end
+    
+    local posterData = data.posterData
+    local coords = data.coords
+    local heading = data.heading
+    
+    -- Validate poster data
+    if not posterData or not posterData.wanted_id then
+        Framework.Notify(src, _U('error_invalid_poster'), 'error')
+        return
+    end
+    
+    -- Check distance to other posters
+    if Config.PosterPlacement.minDistanceBetweenPosters > 0 then
+        Database.GetNearbyPlacedPosters(coords.x, coords.y, coords.z, Config.PosterPlacement.minDistanceBetweenPosters, function(nearby)
+            if nearby and #nearby > 0 then
+                Framework.Notify(src, _U('poster_too_close'), 'error')
+                return
+            end
+            
+            -- Save to database
+            SavePlacedPoster(src, posterData, coords, heading)
+        end)
+    else
+        -- Save to database
+        SavePlacedPoster(src, posterData, coords, heading)
+    end
+end)
+
+-- Helper function to save placed poster
+function SavePlacedPoster(src, posterData, coords, heading)
+    local placedBy = Framework.GetPlayerIdentifier(src)
+    local placedByName = Framework.GetPlayerName(src)
+    
+    Database.CreatePlacedPoster({
+        wanted_id = posterData.wanted_id,
+        poster_data = json.encode(posterData),
+        coords_x = coords.x,
+        coords_y = coords.y,
+        coords_z = coords.z,
+        heading = heading,
+        placed_by = placedBy,
+        placed_by_name = placedByName
+    }, function(posterId)
+        if posterId then
+            -- Remove poster item from inventory
+            Framework.RemoveItem(src, 'wanted_poster', 1)
+            
+            -- Notify player
+            Framework.Notify(src, _U('poster_placed'), 'success')
+            
+            -- Notify nearby players
+            if Config.PosterPlacement.notifyOnPlace and Config.PosterPlacement.notifyRadius > 0 then
+                local playerPed = GetPlayerPed(src)
+                if playerPed and playerPed > 0 then
+                    local playerCoords = GetEntityCoords(playerPed)
+                    for _, playerId in ipairs(GetPlayers()) do
+                        local targetSrc = tonumber(playerId)
+                        if targetSrc ~= src then
+                            local targetPed = GetPlayerPed(targetSrc)
+                            if targetPed and targetPed > 0 then
+                                local targetCoords = GetEntityCoords(targetPed)
+                                if #(playerCoords - targetCoords) <= Config.PosterPlacement.notifyRadius then
+                                    TriggerClientEvent('lxr-wantedboard:client:addPlacedPoster', targetSrc, {
+                                        id = posterId,
+                                        wanted_id = posterData.wanted_id,
+                                        poster_data = posterData,
+                                        coords_x = coords.x,
+                                        coords_y = coords.y,
+                                        coords_z = coords.z,
+                                        heading = heading,
+                                        placed_by = Framework.GetPlayerIdentifier(src),
+                                        placed_by_name = Framework.GetPlayerName(src)
+                                    })
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            
+            -- Add to client
+            TriggerClientEvent('lxr-wantedboard:client:addPlacedPoster', src, {
+                id = posterId,
+                wanted_id = posterData.wanted_id,
+                poster_data = posterData,
+                coords_x = coords.x,
+                coords_y = coords.y,
+                coords_z = coords.z,
+                heading = heading,
+                placed_by = Framework.GetPlayerIdentifier(src),
+                placed_by_name = Framework.GetPlayerName(src)
+            })
+        else
+            Framework.Notify(src, _U('error_database'), 'error')
+        end
+    end)
+end
+
+-- View placed poster
+RegisterNetEvent('lxr-wantedboard:server:viewPlacedPoster', function(posterId)
+    local src = source
+    
+    Database.GetPlacedPosterById(posterId, function(poster)
+        if poster and poster.poster_data then
+            local posterData = json.decode(poster.poster_data)
+            TriggerClientEvent('lxr-wantedboard:client:viewPlacedPosterData', src, posterData)
+        else
+            Framework.Notify(src, _U('error_invalid_poster'), 'error')
+        end
+    end)
+end)
+
+-- Remove placed poster
+RegisterNetEvent('lxr-wantedboard:server:removePlacedPoster', function(posterId)
+    local src = source
+    
+    -- Get poster data
+    Database.GetPlacedPosterById(posterId, function(poster)
+        if not poster then
+            Framework.Notify(src, _U('error_invalid_poster'), 'error')
+            return
+        end
+        
+        local playerCid = Framework.GetPlayerIdentifier(src)
+        local canRemove = false
+        
+        -- Check if player can remove
+        if Config.PosterPlacement.canRemoveOwn and poster.placed_by == playerCid then
+            canRemove = true
+        end
+        
+        -- Check if law enforcement
+        if Config.PosterPlacement.canRemoveLaw and Framework.IsLawEnforcement(src) then
+            canRemove = true
+        end
+        
+        -- Check if criminal on the poster
+        if Config.PosterPlacement.canRemoveCriminal then
+            local posterData = json.decode(poster.poster_data)
+            if posterData and posterData.citizenid == playerCid then
+                canRemove = true
+            end
+        end
+        
+        if not canRemove then
+            Framework.Notify(src, _U('cannot_remove_poster'), 'error')
+            return
+        end
+        
+        -- Remove from database
+        Database.RemovePlacedPoster(posterId, function(success)
+            if success then
+                -- Give poster back to inventory if pickup enabled
+                if Config.PosterPlacement.canPickup then
+                    local posterData = json.decode(poster.poster_data)
+                    Framework.AddItem(src, 'wanted_poster', 1, posterData)
+                    Framework.Notify(src, _U('poster_picked_up'), 'success')
+                else
+                    Framework.Notify(src, _U('poster_removed'), 'success')
+                end
+                
+                -- Notify all clients to remove
+                TriggerClientEvent('lxr-wantedboard:client:removePlacedPoster', -1, posterId)
+            else
+                Framework.Notify(src, _U('error_database'), 'error')
+            end
+        end)
+    end)
+end)
+
+-- Request placed posters
+RegisterNetEvent('lxr-wantedboard:server:requestPlacedPosters', function()
+    local src = source
+    
+    if Config.PosterPlacement.loadOnStartup then
+        Database.GetAllPlacedPosters(function(posters)
+            -- Decode poster data for each
+            for i, poster in ipairs(posters) do
+                if poster.poster_data then
+                    poster.poster_data = json.decode(poster.poster_data)
+                end
+            end
+            
+            TriggerClientEvent('lxr-wantedboard:client:loadPlacedPosters', src, posters)
+        end)
+    end
 end)
 
 -- ████████████████████████████████████████████████████████████████████████████████
