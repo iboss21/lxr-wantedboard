@@ -6,7 +6,7 @@
    ███████╗██║  ██║██║ ╚████║██████╔╝    ╚██████╔╝██║         ╚███╔███╔╝╚██████╔╝███████╗╚████╔╝ ███████╗███████║
    ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝      ╚═════╝ ╚═╝          ╚══╝╚══╝  ╚═════╝ ╚══════╝ ╚═══╝  ╚══════╝╚══════╝
                                                                                                                    
-   🎯 LXR Wanted Board - Enyo Wanted Board System for RedM
+   🎯 LXR Wanted Board - Advanced Wanted Board System for RedM
    
    A comprehensive wanted board system for sheriffs to post bounties on fugitives.
    Features integration with US National Archive (MDT) for record keeping.
@@ -25,11 +25,28 @@ game 'rdr3'
 rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships.'
 
 name 'lxr-wantedboard'
-description 'Enyo Wanted Board System - Bounty Hunting with US National Archive (MDT) Integration'
+description 'LXR Wanted Board System - Bounty Hunting with US National Archive (MDT) Integration'
 author 'iBoss - wolves.land'
 version '1.0.0'
 
 lua54 'yes'
+
+-- ████████████████████████████████████████████████████████████████████████████████
+-- ██████████████████████████ TEBEX ESCROW PROTECTION █████████████████████████████
+-- ████████████████████████████████████████████████████████████████████████████████
+-- This resource is protected for Tebex distribution
+-- Escrow protected files are marked below
+-- ████████████████████████████████████████████████████████████████████████████████
+
+escrow_ignore {
+    'config.lua',
+    'installation.sql',
+    'README.md',
+    'INSTALLATION.md',
+    'FEATURES.md',
+    'CHANGELOG.md',
+    'shared/*.lua'
+}
 
 -- ████████████████████████████████████████████████████████████████████████████████
 -- ████████████████████████████ SHARED FILES ██████████████████████████████████████
@@ -48,7 +65,8 @@ shared_scripts {
 client_scripts {
     'client/framework.lua',
     'client/main.lua',
-    'client/ui.lua'
+    'client/ui.lua',
+    'client/posters.lua'
 }
 
 -- ████████████████████████████████████████████████████████████████████████████████

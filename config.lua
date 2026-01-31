@@ -768,6 +768,36 @@ Config.Translations = {
         ['you_are_wanted'] = 'You are now wanted for: %s',
         ['you_are_captured'] = 'You have been captured by a bounty hunter',
         
+        -- Capture
+        ['capture_started'] = 'Capturing wanted criminal...',
+        ['capture_success'] = 'Criminal captured! Deliver to sheriff office.',
+        ['capture_failed'] = 'Capture failed! Criminal resisted.',
+        ['capture_requires_handcuffs'] = 'You need handcuffs to capture criminals',
+        ['capture_no_license'] = 'You need a bounty hunter license',
+        ['capture_already_capturing'] = 'Already capturing someone',
+        ['not_close_enough'] = 'Get closer to the target',
+        ['deliver_bounty'] = 'Press [E] to deliver bounty',
+        ['bounty_delivered'] = 'Bounty delivered! Reward: $%s',
+        ['delivery_expired'] = 'Bounty delivery expired',
+        
+        -- Posters
+        ['poster_placement_disabled'] = 'Poster placement is disabled',
+        ['poster_placement_mode'] = 'Poster placement mode activated',
+        ['poster_placement_instructions'] = 'Aim at a wall and press [E] to place, [G] to cancel',
+        ['press_to_place'] = 'Press [E] to place poster',
+        ['poster_placement_cancelled'] = 'Poster placement cancelled',
+        ['poster_placed'] = 'Poster placed on wall',
+        ['press_to_view_poster'] = 'Press [E] to view poster',
+        ['hold_to_remove'] = 'Hold [E] to remove poster',
+        ['poster_removed'] = 'Poster removed',
+        ['poster_destroyed'] = 'Poster destroyed',
+        ['poster_picked_up'] = 'Poster picked up',
+        ['cannot_remove_poster'] = 'You cannot remove this poster',
+        ['error_invalid_poster'] = 'Invalid poster data',
+        ['poster_too_close'] = 'Too close to another poster',
+        ['poster_must_target_wall'] = 'You must target a wall',
+        ['poster_received'] = 'You received a wanted poster',
+        
         -- Errors
         ['error_no_handcuffs'] = 'You need handcuffs to capture criminals',
         ['error_no_target'] = 'No valid target found',
@@ -809,6 +839,69 @@ Config.Translations = {
         ['cmd_capture'] = 'Capture a wanted criminal',
         ['cmd_claimreward'] = 'Claim bounty reward'
     }
+}
+
+-- ████████████████████████████████████████████████████████████████████████████████
+-- ████████████████████████ POSTER PLACEMENT SYSTEM ███████████████████████████████
+-- ████████████████████████████████████████████████████████████████████████████████
+
+Config.PosterPlacement = {
+    enabled = true, -- Enable poster placement system
+    
+    -- Placement settings
+    placementDistance = 3.0, -- Maximum distance to place poster
+    interactionDistance = 2.0, -- Distance to interact with placed poster
+    raycastDistance = 10.0, -- Raycast distance for wall detection
+    
+    -- Placement restrictions
+    requireWall = true, -- Must target a wall to place
+    allowMultiplePlayers = true, -- Multiple players can place on same wall
+    minDistanceBetweenPosters = 1.5, -- Minimum distance between placed posters
+    
+    -- Interactions
+    canViewPosters = true, -- Anyone can view placed posters
+    canRemoveOwn = true, -- Players can remove their own posters
+    canRemoveLaw = true, -- Law enforcement can remove any poster
+    canRemoveCriminal = true, -- Criminals can remove posters about them
+    canDestroy = true, -- Allow destroying posters
+    canPickup = true, -- Allow picking up posters to inventory
+    
+    -- Permissions
+    lawJobsCanRemoveAll = { -- Jobs that can remove any poster
+        'sheriff',
+        'marshal',
+        'deputy',
+        'lawman'
+    },
+    
+    -- Visual settings
+    posterScale = 0.5, -- Scale of placed poster objects
+    posterModel = nil, -- Custom prop model (nil = use default)
+    useMarker = true, -- Show marker at placed poster location
+    markerType = 1, -- Marker type
+    markerScale = { x = 0.3, y = 0.3, z = 0.3 },
+    markerColor = { r = 255, g = 200, b = 100, a = 100 },
+    
+    -- Persistence
+    loadOnStartup = true, -- Load all placed posters on resource start
+    loadRadius = 100.0, -- Radius to load placed posters around player
+    syncInterval = 30000, -- Sync placed posters every 30 seconds
+    
+    -- Keybinds (RedM control codes)
+    keys = {
+        interact = 0xCEFD9220, -- E key
+        cancel = 0x760A9C6F, -- G key
+        alternative = 0xD9D0E1C0 -- SPACEBAR
+    },
+    
+    -- Hold duration
+    holdDuration = 2000, -- Milliseconds to hold E to remove poster
+    
+    -- Notifications
+    notifyOnPlace = true,
+    notifyOnRemove = true,
+    notifyOnDestroy = true,
+    notifyRadius = 50.0 -- Notify players within radius
 }
 
 -- ████████████████████████████████████████████████████████████████████████████████
