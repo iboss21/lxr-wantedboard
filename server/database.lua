@@ -336,15 +336,19 @@ end
 
 -- Remove placed poster
 function Database.RemovePlacedPoster(id, callback)
-    MySQL.query('DELETE FROM lxr_placed_posters WHERE id = ?', { id }, function(affectedRows)
-        callback(affectedRows > 0)
+    MySQL.query('DELETE FROM lxr_placed_posters WHERE id = ?', { id }, function(result)
+        local success = result and result.affectedRows and result.affectedRows > 0
+        callback(success)
     end)
 end
 
 -- Remove all placed posters for a wanted ID
 function Database.RemovePlacedPostersByWantedId(wantedId, callback)
-    MySQL.query('DELETE FROM lxr_placed_posters WHERE wanted_id = ?', { wantedId }, function(affectedRows)
-        if callback then callback(affectedRows > 0) end
+    MySQL.query('DELETE FROM lxr_placed_posters WHERE wanted_id = ?', { wantedId }, function(result)
+        if callback then 
+            local success = result and result.affectedRows and result.affectedRows > 0
+            callback(success)
+        end
     end)
 end
 

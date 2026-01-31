@@ -534,16 +534,16 @@ RegisterNetEvent('lxr-wantedboard:server:placePoster', function(data)
             end
             
             -- Save to database
-            savePlacedPoster(src, posterData, coords, heading)
+            SavePlacedPoster(src, posterData, coords, heading)
         end)
     else
         -- Save to database
-        savePlacedPoster(src, posterData, coords, heading)
+        SavePlacedPoster(src, posterData, coords, heading)
     end
 end)
 
 -- Helper function to save placed poster
-function savePlacedPoster(src, posterData, coords, heading)
+function SavePlacedPoster(src, posterData, coords, heading)
     local placedBy = Framework.GetPlayerIdentifier(src)
     local placedByName = Framework.GetPlayerName(src)
     
@@ -566,23 +566,29 @@ function savePlacedPoster(src, posterData, coords, heading)
             
             -- Notify nearby players
             if Config.PosterPlacement.notifyOnPlace and Config.PosterPlacement.notifyRadius > 0 then
-                local playerCoords = GetEntityCoords(GetPlayerPed(src))
-                for _, playerId in ipairs(GetPlayers()) do
-                    local targetSrc = tonumber(playerId)
-                    if targetSrc ~= src then
-                        local targetCoords = GetEntityCoords(GetPlayerPed(targetSrc))
-                        if #(playerCoords - targetCoords) <= Config.PosterPlacement.notifyRadius then
-                            TriggerClientEvent('lxr-wantedboard:client:addPlacedPoster', targetSrc, {
-                                id = posterId,
-                                wanted_id = posterData.wanted_id,
-                                poster_data = posterData,
-                                coords_x = coords.x,
-                                coords_y = coords.y,
-                                coords_z = coords.z,
-                                heading = heading,
-                                placed_by = Framework.GetPlayerIdentifier(src),
-                                placed_by_name = Framework.GetPlayerName(src)
-                            })
+                local playerPed = GetPlayerPed(src)
+                if playerPed and playerPed > 0 then
+                    local playerCoords = GetEntityCoords(playerPed)
+                    for _, playerId in ipairs(GetPlayers()) do
+                        local targetSrc = tonumber(playerId)
+                        if targetSrc ~= src then
+                            local targetPed = GetPlayerPed(targetSrc)
+                            if targetPed and targetPed > 0 then
+                                local targetCoords = GetEntityCoords(targetPed)
+                                if #(playerCoords - targetCoords) <= Config.PosterPlacement.notifyRadius then
+                                    TriggerClientEvent('lxr-wantedboard:client:addPlacedPoster', targetSrc, {
+                                        id = posterId,
+                                        wanted_id = posterData.wanted_id,
+                                        poster_data = posterData,
+                                        coords_x = coords.x,
+                                        coords_y = coords.y,
+                                        coords_z = coords.z,
+                                        heading = heading,
+                                        placed_by = Framework.GetPlayerIdentifier(src),
+                                        placed_by_name = Framework.GetPlayerName(src)
+                                    })
+                                end
+                            end
                         end
                     end
                 end

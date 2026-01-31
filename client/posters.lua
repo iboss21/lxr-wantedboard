@@ -281,7 +281,8 @@ Citizen.CreateThread(function()
                             Citizen.Wait(0)
                         end
                         
-                        if IsControlPressed(0, Config.PosterPlacement.keys.interact) and (GetGameTimer() - holdStart) >= Config.PosterPlacement.holdDuration then
+                        local holdTime = GetGameTimer() - holdStart
+                        if holdTime >= Config.PosterPlacement.holdDuration then
                             TriggerServerEvent('lxr-wantedboard:server:removePlacedPoster', poster.id)
                         end
                     end
